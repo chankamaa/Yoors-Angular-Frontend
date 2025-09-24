@@ -1,0 +1,90 @@
+<div class="container-fluid vh-100 d-flex align-items-center justify-content-center bg-light">
+  <div class="row justify-content-center w-100">
+    <div class="col-md-6 col-lg-4">
+      <div class="card shadow">
+        <div class="card-body p-4">
+          <div class="text-center mb-4">
+            <h2 class="card-title text-primary">
+              <i class="bi bi-person-circle fs-1"></i>
+            </h2>
+            <h3 class="text-dark">Welcome Back</h3>
+            <p class="text-muted">Please sign in to your account</p>
+          </div>
+          
+          <div *ngIf="errorMessage" class="alert alert-danger" role="alert">
+            <i class="bi bi-exclamation-triangle"></i>
+            {{ errorMessage }}
+          </div>
+
+          <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+            <div class="mb-3">
+              <label for="email" class="form-label">Email</label>
+              <div class="input-group">
+                <span class="input-group-text">
+                  <i class="bi bi-envelope"></i>
+                </span>
+                <input 
+                  type="email" 
+                  class="form-control" 
+                  id="email"
+                  formControlName="email"
+                  [class.is-invalid]="loginForm.get('email')?.invalid && loginForm.get('email')?.touched"
+                  placeholder="Enter your email">
+              </div>
+              <div *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched" class="invalid-feedback">
+                <small *ngIf="loginForm.get('email')?.errors?.['required']">Email is required</small>
+                <small *ngIf="loginForm.get('email')?.errors?.['email']">Please enter a valid email</small>
+              </div>
+            </div>
+
+            <div class="mb-4">
+              <label for="password" class="form-label">Password</label>
+              <div class="input-group">
+                <span class="input-group-text">
+                  <i class="bi bi-lock"></i>
+                </span>
+                <input 
+                  [type]="showPassword ? 'text' : 'password'" 
+                  class="form-control" 
+                  id="password"
+                  formControlName="password"
+                  [class.is-invalid]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched"
+                  placeholder="Enter your password">
+                <button 
+                  class="btn btn-outline-secondary" 
+                  type="button"
+                  (click)="togglePasswordVisibility()">
+                  <i [class]="showPassword ? 'bi bi-eye-slash' : 'bi bi-eye'"></i>
+                </button>
+              </div>
+              <div *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched" class="invalid-feedback">
+                <small *ngIf="loginForm.get('password')?.errors?.['required']">Password is required</small>
+                <small *ngIf="loginForm.get('password')?.errors?.['minlength']">Password must be at least 6 characters</small>
+              </div>
+            </div>
+
+            <div class="d-grid gap-2">
+              <button 
+                type="submit" 
+                class="btn btn-primary btn-lg"
+                [disabled]="loginForm.invalid || loading">
+                <span *ngIf="loading" class="spinner-border spinner-border-sm me-2" role="status"></span>
+                <i *ngIf="!loading" class="bi bi-box-arrow-in-right me-2"></i>
+                {{ loading ? 'Signing In...' : 'Sign In' }}
+              </button>
+            </div>
+          </form>
+
+          <div class="text-center mt-4">
+            <p class="text-muted">
+              Don't have an account? 
+              <a routerLink="/register" class="text-primary text-decoration-none">
+                <strong>Sign up here</strong>
+              </a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
